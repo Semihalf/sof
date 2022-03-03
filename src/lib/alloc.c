@@ -84,7 +84,7 @@ static inline uint32_t block_get_size(struct block_map *map)
 }
 
 /* total size of heap */
-static inline uint32_t heap_get_size(struct mm_heap *heap)
+static inline uint32_t __unused heap_get_size(struct mm_heap *heap)
 {
 	uint32_t size = sizeof(struct mm_heap);
 	int i;
