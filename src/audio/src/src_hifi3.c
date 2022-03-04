@@ -191,7 +191,7 @@ static inline void fir_filter(ae_f32 *rp, const void *cp, ae_f32 *wp0,
 		 * channel sample. Discard read value p0.
 		 */
 		dp = (ae_f24x2 *)rp;
-		AE_L32F24_XC(d0, (ae_f24 *)dp, -sizeof(ae_f24));
+		AE_L32F24_XC(d0, dp, -sizeof(ae_f24));
 
 		/* Reset coefficient pointer and clear accumulator */
 		coefp = (ae_f24x2 *)cp;
@@ -359,11 +359,11 @@ void src_polyphase_stage_cir(struct src_stage_prm *s)
 				/* Load 32 bits sample to accumulator,
 				 * advance pointer, shift left with saturate.
 				 */
-				AE_L32_XP(q, (ae_int32 *)x_rptr, sz);
+				AE_L32_XP(q, x_rptr, sz);
 				q = AE_SLAA32(q, s->shift);
 
 				/* Store to circular buffer, advance pointer */
-				AE_S32_L_XC(q, (ae_int32 *)fir->fir_wp, n_sz);
+				AE_S32_L_XC(q, fir->fir_wp, n_sz);
 			}
 
 			/* Check for wrap */
@@ -410,9 +410,9 @@ void src_polyphase_stage_cir(struct src_stage_prm *s)
 				/* Circular load, shift right, linear store,
 				 * and advance read and write pointers.
 				 */
-				AE_L32_XC(q, (ae_int32 *)fir->out_rp, sz);
+				AE_L32_XC(q, fir->out_rp, sz);
 				q = AE_SRAA32(q, s->shift);
-				AE_S32_L_XP(q, (ae_int32 *)y_wptr, sz);
+				AE_S32_L_XP(q, y_wptr, sz);
 			}
 
 			/* Check wrap */
@@ -487,10 +487,10 @@ void src_polyphase_stage_cir_s16(struct src_stage_prm *s)
 				 * by 16 into q, advance read and write
 				 * pointers.
 				 */
-				AE_L16_XP(d, (ae_int16 *)x_rptr,
+				AE_L16_XP(d, x_rptr,
 					  sizeof(ae_int16));
 				q = AE_CVT32X2F16_32(d);
-				AE_S32_L_XC(q, (ae_int32 *)fir->fir_wp, n_sz);
+				AE_S32_L_XC(q, fir->fir_wp, n_sz);
 			}
 
 			/* Check for wrap */
@@ -537,13 +537,13 @@ void src_polyphase_stage_cir_s16(struct src_stage_prm *s)
 				/* Circular load for 32 bit sample,
 				 * advance read pointer.
 				 */
-				AE_L32_XC(q, (ae_int32 *)fir->out_rp, sz);
+				AE_L32_XC(q, fir->out_rp, sz);
 
 				/* Store Q1.31 value as Q1.15 and
 				 * advance write pointer.
 				 */
 				d = AE_ROUND16X4F32SSYM(q, q);
-				AE_S16_0_XP(d, (ae_int16 *)y_wptr,
+				AE_S16_0_XP(d, y_wptr,
 					    sizeof(ae_int16));
 			}
 
