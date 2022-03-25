@@ -175,7 +175,7 @@ static int pcm_convert_s24_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(source);
 
 		/* load one 32 bit sample */
-		AE_L32_XC(sample_1, (ae_int32 *)in, sizeof(ae_int32));
+		AE_L32_XC(sample_1, in, sizeof(ae_int32));
 
 		/* shift and round */
 		sample_1 = pcm_shift_s24_to_s16(sample_1);
@@ -185,7 +185,7 @@ static int pcm_convert_s24_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(sink);
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_0(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_0(sample), out,
 			    sizeof(ae_int16));
 
 		samples--;
@@ -234,7 +234,7 @@ static int pcm_convert_s24_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(sink);
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_2(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_2(sample), out,
 			    sizeof(ae_int16));
 
 		/* no more samples to process */
@@ -242,7 +242,7 @@ static int pcm_convert_s24_to_s16(const struct audio_stream *source,
 			return samples;
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_0(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_0(sample), out,
 			    sizeof(ae_int16));
 
 		leftover -= 2;
@@ -374,7 +374,7 @@ static int pcm_convert_s32_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(source);
 
 		/* load one 32 bit sample */
-		AE_L32_XC(sample_1, (ae_int32 *)in, sizeof(ae_int32));
+		AE_L32_XC(sample_1, in, sizeof(ae_int32));
 
 		/* shift and round */
 		sample = AE_ROUND16X4F32SSYM(sample_1, sample_1);
@@ -383,7 +383,7 @@ static int pcm_convert_s32_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(sink);
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_0(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_0(sample), out,
 			    sizeof(ae_int16));
 
 		samples--;
@@ -429,7 +429,7 @@ static int pcm_convert_s32_to_s16(const struct audio_stream *source,
 		pcm_converter_setup_circular(sink);
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_1(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_1(sample), out,
 			    sizeof(ae_int16));
 
 		/* no more samples to process */
@@ -437,7 +437,7 @@ static int pcm_convert_s32_to_s16(const struct audio_stream *source,
 			return samples;
 
 		/* store one 16 bit sample */
-		AE_S16_0_XC(AE_MOVAD16_0(sample), (ae_int16 *)out,
+		AE_S16_0_XC(AE_MOVAD16_0(sample), out,
 			    sizeof(ae_int16));
 
 		leftover -= 2;
@@ -479,13 +479,13 @@ static int pcm_convert_s24_to_s32(const struct audio_stream *source,
 		pcm_converter_setup_circular(source);
 
 		/* load one 32 bit sample */
-		AE_L32_XC(sample, (ae_int32 *)in, sizeof(ae_int32));
+		AE_L32_XC(sample, in, sizeof(ae_int32));
 
 		/* set sink as circular buffer */
 		pcm_converter_setup_circular(sink);
 
 		/* shift left and store one 32 bit sample */
-		AE_S32_L_XC(AE_SLAI32(sample, 8), (ae_int32 *)out,
+		AE_S32_L_XC(AE_SLAI32(sample, 8), out,
 			    sizeof(ae_int32));
 
 		samples--;
@@ -517,13 +517,13 @@ static int pcm_convert_s24_to_s32(const struct audio_stream *source,
 	pcm_converter_setup_circular(source);
 
 	/* load one 32 bit sample */
-	AE_L32_XC(sample, (ae_int32 *)in, 0);
+	AE_L32_XC(sample, in, 0);
 
 	/* set sink as circular buffer */
 	pcm_converter_setup_circular(sink);
 
 	/* shift left and store one 32 bit sample */
-	AE_S32_L_XC(AE_SLAI32(sample, 8), (ae_int32 *)out, 0);
+	AE_S32_L_XC(AE_SLAI32(sample, 8), out, 0);
 
 	return samples;
 }
@@ -572,14 +572,14 @@ static int pcm_convert_s32_to_s24(const struct audio_stream *source,
 		pcm_converter_setup_circular(source);
 
 		/* load one 32 bit sample */
-		AE_L32_XC(sample, (ae_int32 *)in, sizeof(ae_int32));
+		AE_L32_XC(sample, in, sizeof(ae_int32));
 
 		/* set sink as circular buffer */
 		pcm_converter_setup_circular(sink);
 
 		/* shift right and store one 32 bit sample */
 		sample = pcm_shift_s32_to_s24(sample);
-		AE_S32_L_XC(sample, (ae_int32 *)out, sizeof(ae_int32));
+		AE_S32_L_XC(sample, out, sizeof(ae_int32));
 
 		samples--;
 	}
@@ -611,14 +611,14 @@ static int pcm_convert_s32_to_s24(const struct audio_stream *source,
 	pcm_converter_setup_circular(source);
 
 	/* load one 32 bit sample */
-	AE_L32_XC(sample, (ae_int32 *)in, 0);
+	AE_L32_XC(sample, in, 0);
 
 	/* set sink as circular buffer */
 	pcm_converter_setup_circular(sink);
 
 	/* shift right and store one 32 bit sample */
 	sample = pcm_shift_s32_to_s24(sample);
-	AE_S32_L_XC(sample, (ae_int32 *)out, 0);
+	AE_S32_L_XC(sample, out, 0);
 
 	return samples;
 }
@@ -679,7 +679,7 @@ static void pcm_convert_f_to_s16_lin(const void *psrc, void *pdst,
 {
 	const xtfloat *in = psrc;
 	ae_int16x4 *out = pdst;
-	xtfloat x;
+	xtfloat x = 0.0;
 	int y;
 	int i = 0;
 
@@ -691,7 +691,7 @@ static void pcm_convert_f_to_s16_lin(const void *psrc, void *pdst,
 		y = _round_s(x);
 
 		/* store one 16 bit sample */
-		AE_S16_0_IP(y, (ae_int16 *)out, sizeof(ae_int16));
+		AE_S16_0_IP(y, out, sizeof(ae_int16));
 
 		++i;
 	}
@@ -792,7 +792,7 @@ static void pcm_convert_f_to_s24_lin(const void *psrc, void *pdst,
 		y1 = AE_SAT24S((ae_f32x2)y1);
 
 		/* store one 24 bit sample in 32 bit memory size */
-		AE_S32_L_IP(y1, (ae_int32 *)out, sizeof(*out));
+		AE_S32_L_IP(y1, out, sizeof(*out));
 
 		++i;
 	}
@@ -889,7 +889,7 @@ static void pcm_convert_f_to_s32_lin(const void *psrc, void *pdst,
 		y1 = _round_s(x);
 
 		/* store one 32 bit sample */
-		AE_S32_L_IP(y1, (ae_int32 *)out, sizeof(*out));
+		AE_S32_L_IP(y1, out, sizeof(*out));
 
 		++i;
 	}
