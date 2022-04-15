@@ -658,7 +658,7 @@ static void pcm_convert_s16_to_f_lin(const void *psrc, void *pdst,
 		AE_L16_XC(sample, in, sizeof(ae_int16));
 
 		/* run conversion */
-		fl = XT_FLOAT_S((ae_int16)sample, 15);
+		fl = XT_FLOAT_S((short)sample, 15);
 
 		/* store one float sample */
 		/* need address align to 32 bits */
