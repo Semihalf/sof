@@ -101,11 +101,7 @@ else()
 endif()
 
 # linker flags - GCC >= 10.x uses libc
-if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_C_COMPILER_VERSION VERSION_GREATER 10.0)
-	target_link_libraries(sof_options INTERFACE ${stdlib_flag} -lgcc -lc -Wl,--no-check-sections -ucall_user_start -Wl,-static)
-else()
-	target_link_libraries(sof_options INTERFACE ${stdlib_flag} -lgcc -Wl,--no-check-sections -ucall_user_start -Wl,-static)
-endif()
+target_link_libraries(sof_options INTERFACE ${stdlib_flag} -lgcc -lc -Wl,--no-check-sections -ucall_user_start -Wl,-static)
 
 # C & ASM flags
 target_compile_options(sof_options INTERFACE ${stdlib_flag} -fno-inline-functions ${XTENSA_C_ASM_FLAGS})
