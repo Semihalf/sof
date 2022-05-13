@@ -20,6 +20,9 @@ elseif(CONFIG_ICELAKE)
 	set(platform_folder icelake)
 elseif(CONFIG_TIGERLAKE)
 	set(platform_folder tigerlake)
+	if(XCC OR CLANG)
+		set(RIMAGE_MOD_OFFSET_FLAG -x 24)
+	endif()
 elseif(CONFIG_IMX8)
 	set(platform_folder imx8)
 elseif(CONFIG_IMX8X)
@@ -62,7 +65,7 @@ target_include_directories(sof_options INTERFACE
 
 target_include_directories(sof_options INTERFACE ${PROJECT_SOURCE_DIR}/src/platform/${platform_folder}/include)
 
-if(XCC)
+if(XCC OR CLANG)
 	target_include_directories(sof_options INTERFACE ${ROOT_DIR}/arch/include)
 else()
 	target_include_directories(sof_options INTERFACE ${PROJECT_SOURCE_DIR}/src/platform/${platform_folder}/include/arch)
@@ -95,13 +98,28 @@ if(BUILD_CLANG_SCAN)
 	# that depend on bitness, so force compilation for 32 bit.
 	set(XTENSA_C_ASM_FLAGS -m32)
 	set(XTENSA_C_FLAGS)
-else()
+	set(XTENSA_LD_FLAGS)
+elseif(XCC)
 	set(XTENSA_C_ASM_FLAGS -mlongcalls)
 	set(XTENSA_C_FLAGS -mtext-section-literals)
+	set(XTENSA_LD_FLAGS)
+else()
+	set(XTENSA_C_FLAGS -target "${TOOLCHAIN}" -mtext-section-literals -ggdb)
+	set(XTENSA_C_ASM_FLAGS -target "${TOOLCHAIN}" -mlong-calls)
+	set(XTENSA_LD_FLAGS -target "${TOOLCHAIN}" -mtext-section-literals -mlong-calls)
 endif()
+
+if(CMAKE_VERBOSE_MAKEFILE)
+	list(APPEND XTENSA_C_FLAGS -v)
+	list(APPEND XTENSA_C_ASM_FLAGS -v)
+	list(APPEND XTENSA_LD_FLAGS -v)
+endif()
+
 
 # linker flags - GCC >= 10.x uses libc
 target_link_libraries(sof_options INTERFACE ${stdlib_flag} -lgcc -lc -Wl,--no-check-sections -ucall_user_start -Wl,-static)
+
+target_link_options(sof_options INTERFACE ${XTENSA_LD_FLAGS})
 
 # C & ASM flags
 target_compile_options(sof_options INTERFACE ${stdlib_flag} -fno-inline-functions ${XTENSA_C_ASM_FLAGS})
@@ -125,7 +143,6 @@ target_compile_options(sof_options INTERFACE
 	$<$<COMPILE_LANGUAGE:C>:
 		-${optimization_flag} -g
 		-Wall -Werror
-		-Wl,-EL
 		-Wmissing-prototypes
 		-Wpointer-arith
 		${XTENSA_C_FLAGS}
@@ -139,7 +156,7 @@ if(BUILD_UNIT_TESTS)
 	return()
 endif()
 
-if(XCC)
+if(XCC OR CLANG)
 	file(GLOB LINK_DEPS
 		${ROOT_DIR}/arch/include/xtensa/config/core-isa*)
 else()
@@ -156,7 +173,7 @@ function(sof_add_ld_script binary_name script_name)
 
 	get_target_property(incdirs sof_options INTERFACE_INCLUDE_DIRECTORIES)
 
-	set(iflags "")
+	set(iflags "-EL")
 	set(glob_predicates "")
 	foreach(d ${incdirs})
 		list(APPEND iflags "-I${d}")

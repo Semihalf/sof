@@ -7,7 +7,6 @@ if(CONFIG_CAVS_LPS)
 add_library(lps_vector STATIC "")
 target_link_libraries(lps_vector sof_options)
 target_compile_options(lps_vector PRIVATE -mtext-section-literals)
-
 add_local_sources(lps_vector lps_pic_restore_vector.S)
 
 target_link_libraries(sof_static_libraries INTERFACE lps_vector)

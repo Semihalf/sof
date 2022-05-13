@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
+
+
 if(TOOLCHAIN)
 	set(CROSS_COMPILE "${TOOLCHAIN}-")
 else()
@@ -50,6 +52,9 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 if(TOOLCHAIN STREQUAL "xt")
 	set(XCC 1)
 	set(CMAKE_C_COMPILER ${CROSS_COMPILE}xcc)
+elseif("${CC}" STREQUAL "clang")
+	set(CMAKE_C_COMPILER clang)
+	set(CLANG 1)
 else()
 	set(CMAKE_C_COMPILER ${CROSS_COMPILE}gcc)
 endif()
