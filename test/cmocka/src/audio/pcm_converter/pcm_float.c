@@ -437,8 +437,8 @@ static void test_pcm_convert_f_to_s32_big_neg(void **state)
 	typedef int32_t Tout;
 	static Tin source_buf[] = {
 		INT24_MIN - 127, INT24_MIN - 128, /* 24B mantissa trimming */
-		INT32_MIN + 1, INT32_MIN, /* 24B mantissa trimming */
-		INT32_MIN * 2.f, INT32_MIN * 10.f,
+		(float)(INT32_MIN + 1), (float)INT32_MIN, /* 24B mantissa trimming */
+		(float)INT32_MIN * 2.f, (float)INT32_MIN * 10.f,
 		-INFINITY
 	};
 	static const Tout expected_buf[] = {
@@ -479,9 +479,9 @@ static void test_pcm_convert_f_to_s32_big_pos(void **state)
 	typedef int32_t Tout;
 	static Tin source_buf[] = {
 		INT24_MAX + 127, INT24_MAX + 128,
-		INT32_MAX - 255, INT32_MAX - 127,
-		INT32_MAX - 1, INT32_MAX,
-		INT32_MAX * 2.f, INT32_MAX * 10.f,
+		(float)(INT32_MAX - 255), (float)(INT32_MAX - 127),
+		(float)(INT32_MAX - 1), (float)INT32_MAX,
+		(float)INT32_MAX * 2.f, (float)INT32_MAX * 10.f,
 		INFINITY,
 	};
 	/* remember about 24B mantissa trimming */
