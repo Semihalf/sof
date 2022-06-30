@@ -30,7 +30,7 @@ static void test_math_arithmetic_power_fixed(void **state)
 	for (i = 0; i < ARRAY_SIZE(b); i++) {
 		for (j = 0; j < ARRAY_SIZE(e); j++) {
 			p = power_int32(b[i], e[j]);
-			float diff = fabsf(power_table[i][j] - (double)p / (1 << 15));
+			float diff = fabsf((float)(power_table[i][j] - (double)p / (1 << 15)));
 
 			if (diff > CMP_TOLERANCE) {
 				printf("%s: diff for %.16f: base = %.16f",
