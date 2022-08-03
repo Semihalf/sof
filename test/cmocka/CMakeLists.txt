@@ -20,6 +20,7 @@ elseif(CLANG)
 	message(STATUS "Building CMocka with CLANG")
 	set(UT_CC_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/cmocka-xtensa-clang.cmake)
 	set(UT_TOOLCHAIN "-DTOOLCHAIN=${TOOLCHAIN}")
+	set(SIMULATOR xt-run --exit_with_target_code)
 else()
 	# xtensa XCC build for xt-run.
 	set(UT_CC_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/cmocka-xtensa-xt-toolchain.cmake)

@@ -145,6 +145,7 @@ target_compile_options(sof_options INTERFACE
 		-Wall -Werror
 		-Wmissing-prototypes
 		-Wpointer-arith
+		-Wno-unused-function
 		${XTENSA_C_FLAGS}
 		${EXTRA_CFLAGS_AS_LIST}
 	>
