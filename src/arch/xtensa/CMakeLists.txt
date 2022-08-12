@@ -107,6 +107,11 @@ else()
 	set(XTENSA_C_FLAGS -target "${TOOLCHAIN}" -mtext-section-literals -ggdb)
 	set(XTENSA_C_ASM_FLAGS -target "${TOOLCHAIN}" -mlong-calls)
 	set(XTENSA_LD_FLAGS -target "${TOOLCHAIN}" -mtext-section-literals -mlong-calls)
+	#HIFI-Clang requires XCC directory as sysroot for semi-hosted build
+	if (CLANG)
+		list(APPEND XTENSA_C_FLAGS --sysroot=${ROOT_DIR}/../../../../)
+		list(APPEND XTENSA_LD_FLAGS --sysroot=${ROOT_DIR}/../../../../)
+	endif()
 endif()
 
 if(CMAKE_VERBOSE_MAKEFILE)

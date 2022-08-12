@@ -48,6 +48,7 @@ else()
 			-DWITH_STATIC_LIB=ON
 			-DWITH_EXAMPLES=OFF
 			-DWITH_POSITION_INDEPENDENT_CODE=OFF
+			-DROOT_DIR=${ROOT_DIR}
 			-DWITH_TINY_CONFIG=ON
 			${UT_TOOLCHAIN}
 		BUILD_BYPRODUCTS "${cmocka_binary_directory}/src/libcmocka-static.a"

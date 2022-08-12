@@ -15,7 +15,7 @@ set(CROSS_COMPILE "${TOOLCHAIN}-")
 
 set(CMAKE_C_COMPILER clang)
 
-set(CMAKE_C_FLAGS "-target ${TOOLCHAIN} -ggdb")
+set(CMAKE_C_FLAGS "-target ${TOOLCHAIN} -ggdb --sysroot=${ROOT_DIR}/../../../../")
 
 find_program(CMAKE_LD NAMES "${CROSS_COMPILE}ld" PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_AR NAMES "${CROSS_COMPILE}ar" PATHS ENV PATH NO_DEFAULT_PATH)
