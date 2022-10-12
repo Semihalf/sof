@@ -188,6 +188,62 @@ static inline void *platform_shared_get(void *ptr, int bytes)
 #define cache_to_uncache_init(address) address
 #define is_uncached(address) 0
 
+#ifdef UNIT_TEST
+#define SRAM_BANK_SIZE	0x10000
+#define LP_SRAM_SIZE SRAM_BANK_SIZE
+/* use big enough HP_SRAM_SIZE to build all components for the test bench at once */
+#define HP_SRAM_SIZE (SRAM_BANK_SIZE * 47)
+
+#define HEAP_SYS_RT_0_COUNT64 128
+#define HEAP_SYS_RT_0_COUNT512 16
+#define HEAP_SYS_RT_0_COUNT1024 8
+
+#define HEAP_BUFFER_BLOCK_SIZE		0x100
+#define HEAP_BUFFER_COUNT_MAX	(HP_SRAM_SIZE / HEAP_BUFFER_BLOCK_SIZE)
+
+#define HEAP_SYSTEM_M_SIZE		0x4000 /* heap primary core size */
+#define HEAP_SYSTEM_S_SIZE		0x3000 /* heap secondary core size */
+
+#define SOF_FW_END		(HP_SRAM_BASE + HP_SRAM_SIZE)
+
+#define LP_SRAM_SIZE SRAM_BANK_SIZE
+/* use big enough HP_SRAM_SIZE to build all components for the test bench at once */
+#define HEAP_LP_BUFFER_BLOCK_SIZE		0x180
+#define HEAP_LP_BUFFER_COUNT \
+	(HEAP_LP_BUFFER_SIZE / HEAP_LP_BUFFER_BLOCK_SIZE)
+
+#define HEAP_LP_BUFFER_SIZE LP_SRAM_SIZE
+
+#define HEAP_SYS_RUNTIME_M_SIZE \
+	(HEAP_SYS_RT_0_COUNT64 * 64 + HEAP_SYS_RT_0_COUNT512 * 512 + \
+	HEAP_SYS_RT_0_COUNT1024 * 1024)
+
+#define HEAP_SYS_RUNTIME_S_SIZE \
+	(HEAP_SYS_RT_X_COUNT64 * 64 + HEAP_SYS_RT_X_COUNT512 * 512 + \
+	HEAP_SYS_RT_X_COUNT1024 * 1024)
+
+#define HEAP_SYS_RUNTIME_T_SIZE \
+	(HEAP_SYS_RUNTIME_M_SIZE + ((CONFIG_CORE_COUNT - 1) * \
+	HEAP_SYS_RUNTIME_S_SIZE))
+
+#define HP_SRAM_BASE	0xBE000000
+#define HP_SRAM_SIZE (SRAM_BANK_SIZE * 47)
+#define cache_to_uncache_init(address)	address
+
+
+#define SOF_CORE_S_SIZE \
+	ALIGN((HEAP_SYSTEM_S_SIZE + HEAP_SYS_RUNTIME_S_SIZE + SOF_STACK_SIZE),\
+	SRAM_BANK_SIZE)
+#define SOF_CORE_S_T_SIZE ((CONFIG_CORE_COUNT - 1) * SOF_CORE_S_SIZE)
+
+#define HEAP_SYS_RT_X_COUNT64		64
+#define HEAP_SYS_RT_X_COUNT512		8
+#define HEAP_SYS_RT_X_COUNT1024		4
+
+#define HEAP_SYSTEM_T_SIZE \
+	(HEAP_SYSTEM_M_SIZE + ((CONFIG_CORE_COUNT - 1) * HEAP_SYSTEM_S_SIZE))
+
+#endif
 /**
  * \brief Function for keeping shared data synchronized.
  * It's used after usage of data shared by different cores.

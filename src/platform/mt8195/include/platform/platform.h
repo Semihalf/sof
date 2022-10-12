@@ -70,8 +70,10 @@ static inline void platform_panic(uint32_t p)
 	 */
 	mailbox_sw_reg_write(SRAM_REG_FW_STATUS, p);
 
+#ifndef UNIT_TEST
 	/* Notify application processor */
 	trigger_irq_to_host_req();
+#endif
 }
 
 /**

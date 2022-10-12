@@ -121,7 +121,7 @@ static SHARED_DATA struct block_map buf_heap_map[] = {
 		  uncached_block_hdr(buf_block)),
 };
 
-static SHARED_DATA struct block_map lp_buf_heap_map[] = {
+static SHARED_DATA struct block_map __attribute__((unused)) lp_buf_heap_map[] = {
 	BLOCK_DEF(HEAP_LP_BUFFER_BLOCK_SIZE, HEAP_LP_BUFFER_COUNT,
 		  uncached_block_hdr(lp_buf_block)),
 };

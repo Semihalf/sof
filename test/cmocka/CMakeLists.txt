@@ -111,9 +111,6 @@ function(cmocka_test test_name)
 	target_link_libraries(${test_name} PRIVATE common_mock)
 	target_compile_definitions(${test_name} PRIVATE -DUNIT_TEST)
 
-	# Cmocka requires this define for stdint.h that defines uintptr
-	target_compile_definitions(${test_name} PRIVATE -D_UINTPTR_T_DEFINED)
-
 	# Enable features those would be disabled in some platforms
 	target_compile_definitions(${test_name} PRIVATE -DCONFIG_NUMBERS_GCD -DCONFIG_NUMBERS_NORM -DCONFIG_NUMBERS_VECTOR_FIND)
 
